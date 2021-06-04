@@ -1,13 +1,16 @@
 package main
 
 import (
+	"backend/common/httpreq"
+	"crypto/tls"
+	"errors"
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"errors"
-	"gopkg.in/yaml.v2"
+	"net/http"
 	"os"
 	"reflect"
+	"time"
 )
 var (
 	flConfigFile = ""
@@ -28,6 +31,16 @@ func ParseFlags() {
 }
 
 func main() {
+	client := &http.Client{
+		Timeout: 30 * time.Second,
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
+	}
+	rcfg := httpreq.RestyConfig{Client: client}
+	rClient := httpreq.NewResty(rcfg)
+	resp, err := rClient.R().Get("http://google.com")
+	fmt.Printf("\nResponse Body: %v", resp)
 	InitFlags()
 	ParseFlags()
 	// load config
