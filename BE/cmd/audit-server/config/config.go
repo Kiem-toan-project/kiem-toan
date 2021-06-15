@@ -1,17 +1,15 @@
-package main
+package config
 
 import (
-	"backend/common/httpreq"
-	"crypto/tls"
 	"errors"
 	"flag"
-	"fmt"
+	"github.com/k0kubun/pp"
+	"gopkg.in/yaml.v2"
 	"io/ioutil"
-	"net/http"
 	"os"
 	"reflect"
-	"time"
 )
+
 var (
 	flConfigFile = ""
 	flConfigYaml = ""
@@ -28,28 +26,20 @@ func InitFlags() {
 
 func ParseFlags() {
 	flag.Parse()
+	pp.Println("parsed nà", flConfigFile)
+
 }
 
-func main() {
-	client := &http.Client{
-		Timeout: 30 * time.Second,
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		},
-	}
-	rcfg := httpreq.RestyConfig{Client: client}
-	rClient := httpreq.NewResty(rcfg)
-	resp, err := rClient.R().Get("http://google.com")
-	fmt.Printf("\nResponse Body: %v", resp)
-	InitFlags()
-	ParseFlags()
-	// load config
-	cfg, err := Load(false)
+// Load loads config from file
+func Load() (Config, error) {
+	var cfg, defCfg Config
+	defCfg = Default()
+	err := LoadWithDefault(&cfg, defCfg)
 	if err != nil {
-		panic(err)
-		return
+		return cfg, err
 	}
-	fmt.Println("cfg: ", cfg)
+	//cfg.Databases.MustLoadEnv()
+	return cfg, err
 }
 
 type ConfigPostgres struct {
@@ -70,12 +60,12 @@ type ConfigPostgres struct {
 }
 
 type DBConfig struct {
-	Postgres          ConfigPostgres `yaml:"postgres"`
+	Postgres ConfigPostgres `yaml:"postgres"`
 }
 
 // Config ...
 type Config struct {
-	Databases    DBConfig        `yaml:",inline"`
+	Databases DBConfig `yaml:",inline"`
 }
 
 // Default ...
@@ -88,18 +78,7 @@ func Default() Config {
 	return cfg
 }
 
-// Load loads config from file
-func Load(isTest bool) (Config, error) {
-	var cfg, defCfg Config
-	defCfg = Default()
-	err := LoadWithDefault(&cfg, defCfg)
-	if err != nil {
-		return cfg, err
-	}
 
-	//cfg.Databases.MustLoadEnv()
-	return cfg, err
-}
 
 // DefaultPostgres ...
 func DefaultPostgres() ConfigPostgres {

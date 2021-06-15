@@ -1,11 +1,14 @@
-module github.com/Kiem-toan-project/kiem-toan/tree/main/BE
+module github.com/kiem-toan
 
 go 1.16
 
-replace backend => ./
+replace root => ./
 
 require (
-	backend v0.0.0-00010101000000-000000000000
-	github.com/go-resty/resty/v2 v2.6.0
+	github.com/go-resty/resty/v2 v2.4.0
+	github.com/google/wire v0.5.0
+	github.com/k0kubun/pp v3.0.1+incompatible // indirect
+	github.com/lib/pq v1.10.2
+	github.com/mattn/go-colorable v0.1.8 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )

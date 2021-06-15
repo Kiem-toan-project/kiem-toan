@@ -2,6 +2,8 @@ package httpreq
 
 import (
 	"net/http"
+
+	"github.com/go-resty/resty/v2"
 )
 
 type RestyConfig struct {
