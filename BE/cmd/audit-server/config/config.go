@@ -3,7 +3,6 @@ package config
 import (
 	"errors"
 	"flag"
-	"github.com/k0kubun/pp"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
@@ -26,7 +25,6 @@ func InitFlags() {
 
 func ParseFlags() {
 	flag.Parse()
-	pp.Println("parsed nà", flConfigFile)
 
 }
 
@@ -38,7 +36,6 @@ func Load() (Config, error) {
 	if err != nil {
 		return cfg, err
 	}
-	//cfg.Databases.MustLoadEnv()
 	return cfg, err
 }
 
@@ -66,6 +63,8 @@ type DBConfig struct {
 // Config ...
 type Config struct {
 	Databases DBConfig `yaml:",inline"`
+	Env       string   `yaml:"env"`
+	Port      string   `yaml:"port"`
 }
 
 // Default ...
@@ -74,11 +73,11 @@ func Default() Config {
 		Databases: DBConfig{
 			Postgres: DefaultPostgres(),
 		},
+		Env:  "dev",
+		Port: "8080",
 	}
 	return cfg
 }
-
-
 
 // DefaultPostgres ...
 func DefaultPostgres() ConfigPostgres {

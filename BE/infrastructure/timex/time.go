@@ -1,9 +1,9 @@
 package timex
 
 import (
- 	"strconv"
- 	"time"
 	"backend/common/jsonx"
+	"strconv"
+	"time"
 )
 
 // TimeAsMillis ...

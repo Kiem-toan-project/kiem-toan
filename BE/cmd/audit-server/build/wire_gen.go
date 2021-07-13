@@ -7,18 +7,21 @@ package build
 
 import (
 	"github.com/kiem-toan/cmd/audit-server/config"
-	"github.com/kiem-toan/pkg/database"
-	"github.com/kiem-toan/pkg/test"
+	"github.com/kiem-toan/infrastructure/database"
+	"github.com/kiem-toan/interface/controller/category"
+	category2 "github.com/kiem-toan/interface/handler/category"
 )
 
 // Injectors from wire.go:
 
 func InitApp(cfg config.Config) (*App, error) {
 	databaseDatabase := database.New(cfg)
-	testStr := test.New(databaseDatabase)
+	categoryService := category.New(databaseDatabase)
+	categoryHandler := category2.New(categoryService)
 	app := &App{
-		Test: testStr,
-		Db:   databaseDatabase,
+		Db:              databaseDatabase,
+		CategoryService: categoryService,
+		CategoryHandler: categoryHandler,
 	}
 	return app, nil
 }
@@ -26,6 +29,7 @@ func InitApp(cfg config.Config) (*App, error) {
 // wire.go:
 
 type App struct {
-	Test *test.TestStr
-	Db   *database.Database
+	Db              *database.Database
+	CategoryService *category.CategoryService
+	CategoryHandler *category2.CategoryHandler
 }

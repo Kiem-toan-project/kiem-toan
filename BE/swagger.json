@@ -1,0 +1,114 @@
+{
+  "consumes": [
+    "application/json",
+    "application/xml"
+  ],
+  "produces": [
+    "application/json",
+    "application/xml"
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "the purpose of this application is to provide an application\nthat is using plain go code to define an API\n\nThis should demonstrate all the possible comment annotations\nthat are available to turn go code into a fully compliant swagger 2.0 spec",
+    "title": "Petstore API.",
+    "termsOfService": "there are no TOS at this moment, use at your own risk we take no responsibility",
+    "contact": {
+      "name": "John Doe",
+      "url": "http://john.doe.com",
+      "email": "john.doe@example.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    },
+    "version": "0.0.1"
+  },
+  "host": "localhost",
+  "basePath": "/v2",
+  "paths": {
+    "/CreateCategory": {
+      "post": {
+        "tags": [
+          "Category",
+          "CreateCategory"
+        ],
+        "operationId": "CreateCategoryRequest",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "name": "id",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "x-go-name": "Name",
+            "name": "name",
+            "in": "query"
+          },
+          {
+            "$ref": "#/definitions/Test",
+            "x-go-name": "Test",
+            "name": "test",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/CreateCategoryResponse"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CreateCategoryRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        },
+        "test": {
+          "$ref": "#/definitions/Test"
+        }
+      },
+      "x-go-package": "_/Users/inmac/workspace/kiem-toan/BE/domain/api/category"
+    },
+    "Test": {
+      "type": "object",
+      "properties": {
+        "test": {
+          "type": "string",
+          "x-go-name": "TestID"
+        }
+      },
+      "x-go-package": "_/Users/inmac/workspace/kiem-toan/BE/domain/api/category"
+    }
+  },
+  "responses": {
+    "CreateCategoryResponse": {
+      "description": "",
+      "schema": {
+        "$ref": "#/definitions/CreateCategoryRequest"
+      },
+      "headers": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "obc": {}
+      }
+    }
+  }
+}
